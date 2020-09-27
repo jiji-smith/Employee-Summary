@@ -36,8 +36,11 @@ function managerData() {
     ]).then(data =>{
         // console.log(data)
         manager = new Manager(data.name,data.id,data.email,data.officeNumber)
+
         array.push(manager)
         console.log(array)
+        otherEmployees();
+
     })
 }
 
@@ -48,7 +51,7 @@ function otherEmployees (){
         name: "role",
         message: "what is your role?",
         choices:
-            ["Enginner","Intern"]
+            ["Engineer","Intern"]
         },
         {
         type: "input",
@@ -69,14 +72,14 @@ function otherEmployees (){
         type: "input",
         name: "github",
         message: "Hello, what is employee's github address?",
-        when: (userInput) => {userInput.role === "Engineer" }
+        when: (userInput) => userInput.role === "Engineer"
     },
 
     {
         type: "input",
         name: "school",
         message: "Hello, what is employee's school name?",
-        when: (userInput) => {userInput.role === "Intern" }
+        when: (userInput) => userInput.role === "Intern"
     }
 
     ]).then(data =>{
@@ -87,11 +90,34 @@ function otherEmployees (){
             const intern = new Intern(data.name,data.id,data.email,data.school)
             array.push(intern);
         }
+        newEmployee();
     })
 }
 
 
+function newEmployee () {
+    inquirer.prompt({
+        type: "confirm",
+        name: "nextEmployee",
+        message:"more employees? gogogo! enter info!"
+    }).then(data => {
+        if (data.nextEmployee === true){
+            otherEmployees();
+        } else {
+            fs.existsSync(OUTPUT_DIR) || fs.mkdirSync(OUTPUT_DIR)
+            fs.writeFileSync(outputPath,render(array),"UTF8")
+
+
+        }
+    })
+}
+
+
+
 managerData();
+
+
+
 
 
 
