@@ -33,12 +33,13 @@ function managerData() {
         name: "officeNumber",
         message: "Hello, what is your mananger's office number?",
     }
+    //run the function async...ly..
     ]).then(data =>{
         // console.log(data)
         manager = new Manager(data.name,data.id,data.email,data.officeNumber)
 
         array.push(manager)
-        console.log(array)
+        // console.log(array)
         otherEmployees();
 
     })
@@ -104,7 +105,7 @@ function newEmployee () {
         if (data.nextEmployee === true){
             otherEmployees();
         } else {
-            fs.existsSync(OUTPUT_DIR) || fs.mkdirSync(OUTPUT_DIR)
+            fs.existsSync(OUTPUT_DIR) || fs.mkdirSync(OUTPUT_DIR);
             fs.writeFileSync(outputPath,render(array),"UTF8")
 
 
