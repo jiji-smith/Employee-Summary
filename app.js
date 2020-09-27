@@ -10,6 +10,90 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const array = [];
+
+function managerData() {
+    inquirer.prompt([{
+        type: "input",
+        name: "name",
+        message: "Hello, what is your mananger's name?",
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "Hello, what is your mananger's id?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Hello, what is your mananger's email adress?",
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "Hello, what is your mananger's office number?",
+    }
+    ]).then(data =>{
+        // console.log(data)
+        manager = new Manager(data.name,data.id,data.email,data.officeNumber)
+        array.push(manager)
+        console.log(array)
+    })
+}
+
+function otherEmployees (){
+    inquirer.prompt([
+        {
+        type: "list",
+        name: "role",
+        message: "what is your role?",
+        choices:
+            ["Enginner","Intern"]
+        },
+        {
+        type: "input",
+        name: "name",
+        message: "Hello, what is employee's name?",
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "Hello, what is employee's id?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Hello, what is employee's email address?",
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "Hello, what is employee's github address?",
+        when: (userInput) => {userInput.role === "Engineer" }
+    },
+
+    {
+        type: "input",
+        name: "school",
+        message: "Hello, what is employee's school name?",
+        when: (userInput) => {userInput.role === "Intern" }
+    }
+
+    ]).then(data =>{
+        if (data.role === "Engineer"){
+            const engineer = new Engineer(data.name,data.id,data.email,data.github)
+            array.push(engineer);
+        } else {
+            const intern = new Intern(data.name,data.id,data.email,data.school)
+            array.push(intern);
+        }
+    })
+}
+
+
+managerData();
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
